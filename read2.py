@@ -28,8 +28,8 @@ gpio.setup(14, gpio.OUT)
 
 async def hello():
 	async with websockets.connect('ws://192.168.43.26:4000/socket/websocket') as websocket:
-		#data = dict(topic="users:YWxleEBnbWFpbC5jb21hbGV4Y29sZXM=", event="phx_join", payload={}, ref=1)
-		data = dict(topic="users:anVhbkBnbWFpbC5jb21qdWxpYTEyMw==", event="phx_join", payload={}, ref=None)
+		data = dict(topic="users:YWxleEBnbWFpbC5jb21hbGV4Y29sZXM=", event="phx_join", payload={}, ref=1)
+		#data = dict(topic="users:anVhbkBnbWFpbC5jb21qdWxpYTEyMw==", event="phx_join", payload={}, ref=None)
 		await websocket.send(json.dumps(data))
 		# print("joined")
 		#greeting = await websocket.recv()
@@ -70,7 +70,7 @@ async def retrieve():
 	print(thd)
 	output = {"load": load, "pf": pf, "reading": reading,"thd": thd}
 		
-	msg = dict(topic="users:anVhbkBnbWFpbC5jb21qdWxpYTEyMw==", event="sensor_output", payload=output, ref=None)
+	msg = dict(topic="users:YWxleEBnbWFpbC5jb21hbGV4Y29sZXM=", event="sensor_output", payload=output, ref=None)
  	#data_to_be_sent = await concurrent(data)
 	print(msg)
 	return(msg)
