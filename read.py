@@ -6,7 +6,12 @@ import time
 from random import randint
 import serial
 
-ser =serial.Serial("/dev/ttyACM0", 9600, timeout=1)
+import RPi.GPIO as gpio
+
+#ser =serial.Serial("/dev/ttyACM0", 9600, timeout=1)
+
+gpio.setmode(gpio.BCM)
+gpio.setup(14, gpio.OUT)
 
 
 async def hello():
@@ -17,10 +22,10 @@ async def hello():
 		# print("joined")
 		#greeting = await websocket.recv()
 		print("Joined")
-		a = ""
+		#a = ""
 		while True:
-			msg = await retrieve()
-			await websocket.send(json.dumps(msg))
+			#msg = await retrieve()
+			#await websocket.send(json.dumps(msg))
 			#msg = dict(topic="users:YWxleEBnbWFpbC5jb21hbGV4Y29sZXM=", event="shout", payload={"body":"alex"}, ref=None)
 			#await websocket.send(json.dumps(msg))
 			#print("sent")
@@ -28,16 +33,16 @@ async def hello():
 			control = json.loads(call)
 			#print(control['event'])
 			if(control['event'] == "control"):
-				print(control['payload']['val'])
-				if(control['payload']['val'] == "on"):
-					a = "o"
-				if(control['payload']['val'] == "off"):
-					a = "f"
-				ser.write(a.encode())
+				event(control['payload']['val'])
+				
 			
 			print("< {}".format(call))
 			#time.sleep(0.1)
-
+def event(val):
+	if(val == "on"):
+		gpio.output(14, True)
+	if(val == "off"):
+		gpio.output(14, False)
 
 async def retrieve():
 	ser.write("&".encode())
